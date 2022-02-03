@@ -1,7 +1,7 @@
 {
-  "name": "gatsby-starter-plugin",
+  "name": "guesty-source-plugin",
   "version": "1.0.0",
-  "description": "A minimal boilerplate for the essential files Gatsby looks for in a plugin",
+  "description": "A plugin to source data from the Guesty API for property rental management",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -9,8 +9,18 @@
   },
   "keywords": [
     "gatsby",
-    "gatsby-plugin"
+    "gatsby-plugin",
+    "guesty",
+    "rental",
+    "property"
   ],
-  "author": "Kyle Gill <kyle.robert.gill@gmail.com>",
-  "license": "0BSD"
+  "author": "Jim Deola <contact@amesdean.dev>",
+  "license": "0BSD",
+  "dependencies": {
+    "@apollo/client": "^3.5.8",
+    "dotenv": "^15.0.1",
+    "graphql": "^16.3.0",
+    "subscriptions-transport-ws": "^0.11.0",
+    "ws": "^8.4.2"
+  }
 }
