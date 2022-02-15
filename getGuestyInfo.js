@@ -1,8 +1,10 @@
-
 const axios = require('axios').default;
+require("dotenv").config({
+  // path: `process.env.NODE_ENV`,
+})
 
 // basic auth for guesty 
-const GUESTY_ACCOUNT_ID = process.env.GATSBY_GUESTY_ACCOUNT_ID;
+// const GUESTY_ACCOUNT_ID = process.env.GATSBY_GUESTY_ACCOUNT_ID;
 const username = process.env.GATSBY_GUESTY_API_KEY;
 const password = process.env.GATSBY_GUESTY_API_SECRET;
 
@@ -18,9 +20,9 @@ module.exports = (guestyObject) => {
 
   // pull data from some remote source using cached data as an option in the request
   const {data} = axios.get(`/${guestyObject}`, {
-    params: {
-      accountId: GUESTY_ACCOUNT_ID
-    },
+    // params: {
+    //   accountId: GUESTY_ACCOUNT_ID
+    // },
     headers: {
       'Authorization': `Basic ${token}`
     }

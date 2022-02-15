@@ -1,25 +1,23 @@
-const {createNodeHelpers} = require('gatsby-node-helpers');
+const createNodeHelpers = require('gatsby-node-helpers').default;
 
 const {
   createNodeFactory,
   generateNodeId,
 } = createNodeHelpers({
-  typePrefix: `Guesty`,
+  typePrefix: `GuestyListings`,
 })
 
-const LISTINGS_TYPE = `Listings`
-const FINANCIALS_TYPE = `Reviews`
 
-module.exports.listingNode = createNodeFactory(LISTINGS_TYPE, listing => {
-  if (listing.fiancials) {
-    const financials = listing.financials.map(financial => financial)
-    listing.children = financials.map(financials =>
-      generateNodeId(FINANCIALS_TYPE, `financials_${listing._id}`),
+module.exports.listingNode = createNodeFactory('listing', node => {
+  if (node.reviews) {
+    const reviews = node.reviews.map(review => review)
+    node.children = reviews.map(review =>
+      generateNodeId(REVIEW_TYPE, review.time),
     )
   }
-  return listing 
+  return node 
 })
 
-module.exports.financialsNode = createNodeFactory(FINANCIALS_TYPE, node => {
+module.exports.reviewNode = createNodeFactory('listing-review', node => {
   return node
 })
