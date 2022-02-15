@@ -1,4 +1,4 @@
-const createNodeHelpers = require('gatsby-node-helpers').default;
+const {createNodeHelpers} = require('gatsby-node-helpers');
 
 const {
   createNodeFactory,
