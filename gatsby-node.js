@@ -17,8 +17,8 @@ axios.defaults.headers['Content-Type'] = 'application/json';
 axios.defaults.headers['Authorization'] = `Basic ${token}`;
 
 // graphQL contants
-const LISTINGS_NODE_TYPE = `Listings`;
-const REVIEWS_NODE_TYPE = `Reviews`;
+const LISTINGS_NODE_TYPE = `Listing`;
+const REVIEWS_NODE_TYPE = `Review`;
 
 
 exports.sourceNodes = async ({
