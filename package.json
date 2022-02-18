@@ -1,10 +1,10 @@
 {
-  "name": "guesty-source-plugin",
+  "name": "gatsby-source-guesty",
   "version": "1.0.0",
   "description": "A plugin to source data from the Guesty API for property rental management",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest",
     "build": "echo \"No build script setup\""
   },
   "keywords": [
@@ -19,8 +19,6 @@
   "dependencies": {
     "@apollo/client": "^3.5.8",
     "dotenv": "^15.0.1",
-    "graphql": "^16.3.0",
-    "subscriptions-transport-ws": "^0.11.0",
-    "ws": "^8.4.2"
+    "gatsby-plugin-utils": "^3.1.0"
   }
 }
