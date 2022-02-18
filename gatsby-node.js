@@ -31,7 +31,7 @@ exports.sourceNodes = async ({
     // get all listings data
     const getListings = async () => await axios.get('/listings', {
       params: {
-          fields: "_id accommodates bedrooms beds bathrooms title occupancyStats active prices amenities pictures picture address tags"
+          fields: "_id accommodates bedrooms beds bathrooms propertyType title occupancyStats customFields active prices terms amenities pictures picture address integrations isListed publicDescription"
       }
     })
       .then(response => {
@@ -55,9 +55,13 @@ exports.sourceNodes = async ({
 
 
     // get all account reviews with respective listingIds,
-    const getReviews = async () => await axios.get('reviews-service/api/reviews')
+    const getReviews = async () => await axios.get('reviews-service/api/reviews', {
+      // params: {
+      //   channelId: "airbnb2"
+      // }
+    })
       .then(response => {
-        console.log(response.data);
+        console.log(response.data.data);
         response.data.data.forEach(review => {
           createNode({
             ...review,
@@ -123,15 +127,20 @@ exports.createSchemaCustomization = ({ actions }) => {
       bedrooms: Int!
       beds: Int
       bathrooms: Int 
+      propertyType: String
       title: String! 
       occupancyStats: [String]
       active: Boolean 
       prices: prices
       amenities: [String] 
-      pictures: [File]
       picture: picture
+      pictures: [picture]
       address: address
       tags: [String]
+      isListed: Boolean
+      integrations: integrations
+      customFields: customFields
+      publicDescription: publicDescription
       thumbnail: File @link(from: "fields.thumbnail")
       listingPics: File @link(from: "fields.listingPics")
       reviews: Review @link(by: "listingId", from: "_id")
@@ -144,6 +153,9 @@ exports.createSchemaCustomization = ({ actions }) => {
     }
     type picture {
       thumbnail: File
+      regular: File
+      large: File
+      caption: String
     } 
     type address {
       full: String
@@ -153,6 +165,32 @@ exports.createSchemaCustomization = ({ actions }) => {
       city: String
       country: String
     }
+    type integrations {
+      platform: String
+      _id: String
+      airbnb: airbnb
+    }
+    type airbnb {
+      starRating: Int
+      reviewsCount: Int
+      importCalendar: Boolean
+      isCalendarSynced: Boolean
+    }
+    type customFields {
+      fieldId: String
+      value: String
+      fullText: String
+    }
+    type publicDescription {
+      summary:	String	
+      space:	String	
+      access:	String	
+      neighborhood:	String	
+      transit:	String	
+      notes:	String	
+      houseRules:	String	
+      interactionWithGuests: String
+    }
     type Review implements Node {
       listing: Listing @link(by: "_id", from: "listingId")
     }
@@ -161,7 +199,7 @@ exports.createSchemaCustomization = ({ actions }) => {
   `)
 }
 
-// define schema for plugin options during user config
+// define schema for plugin option validation during configuration of plugin by user
 exports.pluginOptionsSchema = ({ Joi }) => {
   return Joi.object({
     GUESTY_API_KEY: Joi.string()
