@@ -38,7 +38,7 @@ exports.sourceNodes = async ({
         response.data.results.forEach(listing => {
           createNode({
             ...listing,
-            id: createNodeId(`${LISTINGS_NODE_TYPE}-${listing._id}`),
+            id: listing._id,
             parent: null,
             children: [],
             internal: {
@@ -65,7 +65,7 @@ exports.sourceNodes = async ({
         response.data.data.forEach(review => {
           createNode({
             ...review,
-            id: createNodeId(`${REVIEWS_NODE_TYPE}-${review._id}`),
+            id: review._id,
             parent: null,
             children: [],
             internal: {
@@ -192,7 +192,22 @@ exports.createSchemaCustomization = ({ actions }) => {
       interactionWithGuests: String
     }
     type Review implements Node {
-      listing: Listing @link(by: "_id", from: "listingId")
+ 
+      _id: String!
+      channelId: String!
+      createdAt: Date
+      listingId: String!
+      rawReview: rawReview
+    }
+    type rawReview {
+      overall_rating: Int
+      public_review: String!
+      category_ratings_cleanliness: Int
+      category_ratings_accuracy: Int
+      category_ratings_communications: Int
+      category_ratings_location: Int
+      category_ratings_checkin: Int
+      category_ratings_value: Int
     }
 
     
