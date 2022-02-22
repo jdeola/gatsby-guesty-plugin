@@ -10,6 +10,9 @@ const username = process.env.GATSBY_GUESTY_API_KEY;
 const password = process.env.GATSBY_GUESTY_API_SECRET;
 const token = Buffer.from(`${username}:${password}`, 'utf8').toString('base64')
 
+// export token for use in front end axios requests
+exports.token = token 
+
 // axios defaults for all requests
 axios.defaults.baseURL = 'https://api.guesty.com/api/v2/';
 axios.defaults.headers['Content-Type'] = 'application/json';
@@ -113,8 +116,6 @@ exports.onCreateNode = async ({
   }
 }
 
-// create custom resolver for slug based on nickname
-const fullNameResolver = source => `${source.firstName} ${source.name}`
 
 // Create a custom data schema for all fields imported from Guesty API
 
@@ -192,7 +193,7 @@ exports.createSchemaCustomization = ({ actions }) => {
       interactionWithGuests: String
     }
     type Review implements Node {
- 
+      
       _id: String!
       channelId: String!
       createdAt: Date
