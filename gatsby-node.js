@@ -10,9 +10,6 @@ const username = process.env.GATSBY_GUESTY_API_KEY;
 const password = process.env.GATSBY_GUESTY_API_SECRET;
 const token = Buffer.from(`${username}:${password}`, 'utf8').toString('base64')
 
-// export token for use in front end axios requests
-exports.token = token 
-
 // axios defaults for all requests
 axios.defaults.baseURL = 'https://api.guesty.com/api/v2/';
 axios.defaults.headers['Content-Type'] = 'application/json';

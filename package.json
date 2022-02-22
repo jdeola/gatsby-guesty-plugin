@@ -17,8 +17,7 @@
   "author": "Jim Deola <contact@amesdean.dev>",
   "license": "0BSD",
   "dependencies": {
-    "@apollo/client": "^3.5.8",
-    "dotenv": "^15.0.1",
-    "gatsby-plugin-utils": "^3.1.0"
+    "dotenv": "^16.0.0",
+    "gatsby-plugin-utils": "^3.2.0"
   }
 }
