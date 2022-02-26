@@ -119,7 +119,7 @@ exports.onCreateNode = async ({
 exports.createSchemaCustomization = ({ actions }) => {
   const { createTypes } = actions
   createTypes(`
-    type Listing implements Node {
+    type Listing implements Node @infer {
       _id: String! 
       accommodates: Int
       bedrooms: Int!
@@ -140,8 +140,7 @@ exports.createSchemaCustomization = ({ actions }) => {
       customFields: customFields
       publicDescription: publicDescription
       thumbnail: File @link(from: "fields.thumbnail")
-      listingPics: File @link(from: "fields.listingPics")
-      reviews: Review @link(by: "listingId", from: "_id")
+
     }
     type prices {
       basePrice: Int!
@@ -189,13 +188,13 @@ exports.createSchemaCustomization = ({ actions }) => {
       houseRules:	String	
       interactionWithGuests: String
     }
-    type Review implements Node {
-      
+    type Review implements Node @infer {
       _id: String!
       channelId: String!
       createdAt: Date
       listingId: String!
       rawReview: rawReview
+      listing: Listing @link(from: "listing._id" by: "listingId")
     }
     type rawReview {
       overall_rating: Int
@@ -220,7 +219,7 @@ exports.pluginOptionsSchema = ({ Joi }) => {
       .description(`Used as username for basic auth token`)
       .messages({
         // Override the error message if the .required() call fails
-        "any.required": `Your API key is incorrect, check https://support.guesty.com/kb/en/article/generating-an-internal-api-token for help`
+        "any.required": `Your API key is incorrect, try checking https://support.guesty.com/kb/en/article/generating-an-internal-api-token for help`
       }),
     GUESTY_API_SECRET: Joi.string()
       .required()

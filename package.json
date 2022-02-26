@@ -18,6 +18,7 @@
   "license": "0BSD",
   "dependencies": {
     "dotenv": "^16.0.0",
-    "gatsby-plugin-utils": "^3.2.0"
+    "gatsby-plugin-utils": "^3.2.0",
+    "gatsby-source-filesystem": "^4.8.1"
   }
 }
