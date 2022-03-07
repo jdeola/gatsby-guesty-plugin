@@ -90,28 +90,57 @@ exports.sourceNodes = async ({
 
 
 // called each time a node is created
+// exports.onCreateNode = async ({
+//   node, // the node that was just created
+//   actions: { 
+//     createNode, 
+//     createNodeField 
+//   },
+//   createNodeId,
+//   getCache,
+// }) => {
+//   if (node.internal.type === LISTINGS_NODE_TYPE) {
+//     const fileNode = await createRemoteFileNode({
+//       url: node.picture.thumbnail, // the url of the remote image to generate a node for
+//       parentNodeId: node.id,
+//       createNode,
+//       createNodeId,
+//       getCache,
+//     })
+//     if (fileNode) {
+//       createNodeField({ node, name: 'thumbnail', value: fileNode.id })
+//     }
+//   }
+// }
+
 exports.onCreateNode = async ({
-  node, // the node that was just created
-  actions: { 
-    createNode, 
-    createNodeField 
-  },
-  createNodeId,
-  getCache,
-}) => {
-  if (node.internal.type === LISTINGS_NODE_TYPE) {
-    const fileNode = await createRemoteFileNode({
-      url: node.picture.thumbnail, // the url of the remote image to generate a node for
-      parentNodeId: node.id,
-      createNode,
-      createNodeId,
-      getCache,
-    })
-    if (fileNode) {
-      createNodeField({ node, name: 'thumbnail', value: fileNode.id })
+    node, // the node that was just created
+    actions: { 
+      createNode, 
+      createNodeField 
+    },
+    createNodeId,
+    getCache,
+  }) => {
+    if (node.internal.type === LISTINGS_NODE_TYPE && node.pictures !== null) {
+      await node.pictures.forEach(file => {
+        // console.log(file);
+        const fileNode =  createRemoteFileNode({
+          url: file.original, // the url of the remote image to generate a node for
+          parentNodeId: node.id,
+          createNode,
+          createNodeId,
+          getCache,
+        })
+        // for some reason I can get gatsbyImageData from File node, 
+        // but not listing.picFiles
+        if (fileNode) {
+          createNodeField({ node, name: 'picFiles', value: fileNode.id })
+        }
+      })
+      
     }
   }
-}
 
 
 // Create a custom data schema for all fields imported from Guesty API
@@ -131,16 +160,14 @@ exports.createSchemaCustomization = ({ actions }) => {
       active: Boolean 
       prices: prices
       amenities: [String] 
-      picture: picture
-      pictures: [picture]
+      pictures: [pictures]
       address: address
       tags: [String]
       isListed: Boolean
       integrations: integrations
       customFields: customFields
       publicDescription: publicDescription
-      thumbnail: File @link(from: "fields.thumbnail")
-
+      picFiles: [File] @link(from: "fields.picFiles")
     }
     type prices {
       basePrice: Int!
@@ -148,11 +175,13 @@ exports.createSchemaCustomization = ({ actions }) => {
       cleaningFee: Int
       securityDepositFee: Int
     }
-    type picture {
-      thumbnail: File
-      regular: File
-      large: File
+    type pictures {
+      _id: String!
+      thumbnail: String
+      regular: String 
+      large: String 
       caption: String
+      original: String
     } 
     type address {
       full: String
