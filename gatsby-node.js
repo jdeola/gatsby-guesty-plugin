@@ -20,11 +20,13 @@ const LISTINGS_NODE_TYPE = `Listing`;
 const REVIEWS_NODE_TYPE = `Review`;
 
 // create nodes for listings and reviews
+
 exports.sourceNodes = async ({
   actions,
   createContentDigest,
   createNodeId,
   getNodesByType,
+
 }) => {
     const { createNode } = actions
 
@@ -61,7 +63,7 @@ exports.sourceNodes = async ({
       // }
     })
       .then(response => {
-        console.log(response.data.data);
+        // console.log(response.data.data);
         response.data.data.forEach(review => {
           createNode({
             ...review,
